@@ -13,14 +13,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Entity
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transactionId;
+    private Long id;
     @Temporal(TemporalType.DATE)
     private Date operationDate;
     private String operationDescription;
-    private List<User> users;
-    private List<Account> accounts;
+    private Account account;
+
+    public Transaction(Long id, Date operationDate, String operationDescription) {
+        this.id = id;
+        this.operationDate = operationDate;
+        this.operationDescription = operationDescription;
+    }
 }
