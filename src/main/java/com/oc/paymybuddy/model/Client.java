@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import java.util.List;
 
 @Data
@@ -16,10 +17,11 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
-public class User {
+public class Client {
 
-
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long client_id;
 
     private String firstName;
     private String lastName;
@@ -28,8 +30,8 @@ public class User {
     private List<String> friendsList;
     private Account account;
 
-    public User(Long id, String firstName, String lastName, String mail, String password, List<String> friendsList) {
-        this.id = id;
+    public Client(Long id, String firstName, String lastName, String mail, String password, List<String> friendsList) {
+        this.client_id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.mail = mail;

@@ -1,7 +1,4 @@
 package com.oc.paymybuddy.model;
-
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,17 +19,18 @@ import java.util.List;
 public class Account {
 
     @Id
-    private Long Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private int numberAccount;
     private int balance;
-    private User user;
+    private Client client;
     private List<Transaction> transactions = new ArrayList<Transaction>();
 
-    public Account(Long id, int numberAccount, int balance, User user) {
-        Id = id;
+    public Account(Long id, int numberAccount, int balance, Client client) {
+        this.id = id;
         this.numberAccount = numberAccount;
         this.balance = balance;
-        this.user = user;
+        this.client = client;
     }
 
     public void showBalance() {

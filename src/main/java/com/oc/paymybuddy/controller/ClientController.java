@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/api/User")
 @RequiredArgsConstructor
 @Slf4j
-public class UserController {
+public class ClientController {
 }

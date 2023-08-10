@@ -7,16 +7,17 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
+
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity
 public class Transaction {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(TemporalType.DATE)
     private Date operationDate;
