@@ -10,6 +10,7 @@ import java.util.Date;
 
 
 @Entity
+@Table(name = "transaction")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
