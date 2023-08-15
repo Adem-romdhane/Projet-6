@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.*;
 import java.util.List;
@@ -28,12 +29,11 @@ public class Client {
     private List<String> friendsList;
     private Account account;
 
-    public Client(Long id, String firstName, String lastName, String mail, String password, List<String> friendsList) {
+    public Client(Long id, String firstName, String lastName, String mail, String password) {
         this.client_id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.mail = mail;
         this.password = password;
-        this.friendsList = friendsList;
     }
 }
