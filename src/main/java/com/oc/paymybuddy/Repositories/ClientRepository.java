@@ -10,5 +10,5 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Override
     Optional<Client> findById(Long id);
 
-
+//   Page<Client> findByNameContains(String kw, Pageable pageable);
 }

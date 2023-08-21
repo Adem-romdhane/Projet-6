@@ -4,13 +4,16 @@ import com.oc.paymybuddy.model.Client;
 import com.oc.paymybuddy.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/v1/api/Client")
 @RequiredArgsConstructor
 @Slf4j
@@ -18,10 +21,36 @@ public class ClientController {
     private final ClientService clientService;
 
 
-    @GetMapping("/index")
-    public String model(){
+/*
+ @GetMapping("/index")
+    public String model(Model model,
+                        @RequestParam(value = "page", defaultValue = "0") int page,
+                        @RequestParam(value = "size", defaultValue = "4") int size) {
+        Page<Client> clients = clientService.findAllClients(PageRequest.of(page, size));
+        model.addAttribute("listClients", clients.getContent());
+        model.addAttribute("pages",new int[clients.getTotalPages()]);
+        model.addAttribute("currentPage",page);
         return "clients";
     }
+
+*/
+
+    @GetMapping("/index")
+    public String model(Model model,
+                        @RequestParam(value = "page", defaultValue = "0") int page,
+                        @RequestParam(value = "size", defaultValue = "4") int size) {
+        Page<Client> clients = clientService.findAllClients(page, size);
+        model.addAttribute("listClients", clients.getContent());
+        model.addAttribute("pages", new int[clients.getTotalPages()]);
+        model.addAttribute("currentPage", page);
+        return "clients";
+    }
+
+
+
+
+
+
 
     @GetMapping("/get")
     public ResponseEntity<List<Client>> getAllClients() {
@@ -49,8 +78,8 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public Client updateClient(@PathVariable Long id,@RequestBody Client client) {
-        return clientService.updateClient(id,client);
+    public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
+        return clientService.updateClient(id, client);
     }
 
     @DeleteMapping("/delete/{id}")

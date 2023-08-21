@@ -4,6 +4,8 @@ import com.oc.paymybuddy.Repositories.ClientRepository;
 import com.oc.paymybuddy.model.Client;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -20,6 +22,14 @@ public class ClientService {
     public Client saveClient(Client client) {
         return clientRepository.save(client);
     }
+
+    //pagination
+    public Page<Client> findAllClients(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return clientRepository.findAll(pageRequest);
+    }
+
+
 
     public List<Client> findAll() {
         return clientRepository.findAll();
@@ -51,4 +61,6 @@ public class ClientService {
         }
         clientRepository.deleteById(id);
     }
+
+
 }
