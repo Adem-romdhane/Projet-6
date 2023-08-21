@@ -6,20 +6,56 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/v1/api/User")
+@RequestMapping("/v1/api/Client")
 @RequiredArgsConstructor
 @Slf4j
 public class ClientController {
+    private final ClientService clientService;
 
-    @PostMapping("/add")
-    public ResponseEntity<Client> addPerson(@RequestBody Client client) {
-        log.info("add client");
-        return new ResponseEntity<>(ClientService.addClient(client), HttpStatus.CREATED);
+
+    @GetMapping("/index")
+    public String model(){
+        return "clients";
     }
+
+    @GetMapping("/get")
+    public ResponseEntity<List<Client>> getAllClients() {
+        List<Client> clients = clientService.findAll();
+        if (clients.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(clients, HttpStatus.OK);
+    }
+
+    @GetMapping("clients/{id}")
+    public Client getById(@PathVariable Long id) {
+        return clientService.getClientById(id);
+    }
+
+    @PostMapping("/clients")
+    public ResponseEntity<String> addClient(@RequestBody Client client) {
+        try {
+            Client save = clientService.saveClient(client);
+            System.out.println("id client " + save.getId());
+            return new ResponseEntity<>("Client ajouté avec succès", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Erreur lors de l'ajout du client", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public Client updateClient(@PathVariable Long id,@RequestBody Client client) {
+        return clientService.updateClient(id,client);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteClient(@PathVariable("id") Long id) {
+        clientService.deleteClientById(id);
+    }
+
 }

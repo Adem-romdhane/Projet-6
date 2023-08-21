@@ -1,20 +1,17 @@
 package com.oc.paymybuddy.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.*;
 import java.util.Date;
 
 
 @Entity
-@Table(name = "transaction")
+@Table(name = "transactions")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class Transaction {
 
@@ -24,7 +21,8 @@ public class Transaction {
     @Temporal(TemporalType.DATE)
     private Date operationDate;
     private String operationDescription;
-    private Account account;
+
+    //private Account account;
 
     public Transaction(Long id, Date operationDate, String operationDescription) {
         this.id = id;

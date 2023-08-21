@@ -1,16 +1,14 @@
 package com.oc.paymybuddy.model;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "account")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,15 +20,18 @@ public class Account {
     private Long id;
     private int numberAccount;
     private int balance;
-    private Client client;
-    private List<Transaction> transactions = new ArrayList<Transaction>();
+
+    @OneToMany
+    @JoinColumn(name = "account_id")
+    private List<Transaction> transactions;
 
     public Account(Long id, int numberAccount, int balance, Client client) {
         this.id = id;
         this.numberAccount = numberAccount;
         this.balance = balance;
-        this.client = client;
+
     }
+
 
     public void showBalance() {
         System.out.println("your balance : " + balance);

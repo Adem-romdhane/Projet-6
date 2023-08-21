@@ -1,7 +1,6 @@
 package com.oc.paymybuddy;
 
 
-import com.oc.paymybuddy.Repositories.ClientRepository;
 import com.oc.paymybuddy.model.Account;
 import com.oc.paymybuddy.model.Client;
 import org.springframework.boot.CommandLineRunner;
@@ -15,12 +14,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@Configuration
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
+//@Configuration
+//@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @SpringBootApplication
-@EnableTransactionManagement
-@EntityScan(basePackages = "com.oc.paymybuddy") // Spécifiez le package de vos entités
-@ComponentScan
+//@EnableTransactionManagement
+//@EntityScan(basePackages = "com.oc.paymybuddy") // Spécifiez le package de vos entités
+//@ComponentScan
 public class PayMyBuddyApplication {
 
     public static void main(String[] args) {
