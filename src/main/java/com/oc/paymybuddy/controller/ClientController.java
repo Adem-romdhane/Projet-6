@@ -47,11 +47,17 @@ public class ClientController {
     }
 
     @GetMapping("/delete")
-    public String delete(Long id,  int page) {
+    public String delete(Long id, int page) {
         clientService.deleteClientById(id);
-        return "redirect:/index?page="+page;
+        return "redirect:/index?page=" + page;
     }
 
+    //formulaire d'ajout client
+    @GetMapping("/formClients")
+    public String formClient(Model model) {
+        model.addAttribute("client", new Client());
+        return "formClients";
+    }
 
     @GetMapping("/get")
     public ResponseEntity<List<Client>> getAllClients() {
