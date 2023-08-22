@@ -46,10 +46,11 @@ public class ClientController {
         return "clients";
     }
 
-
-
-
-
+    @GetMapping("/delete")
+    public String delete(Long id,  int page) {
+        clientService.deleteClientById(id);
+        return "redirect:/index?page="+page;
+    }
 
 
     @GetMapping("/get")

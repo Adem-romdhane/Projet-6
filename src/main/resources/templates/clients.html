@@ -33,6 +33,11 @@
                     <td th:text="${c.getLastName}"></td>
                     <td th:text="${c.getMail}"></td>
                     <td th:text="${c.getPassword}"></td>
+                    <td>
+                        <a class="btn btn-danger" th:href="@{delete(id=${c.id}, page=${currentPage})}">
+                            Delete
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
