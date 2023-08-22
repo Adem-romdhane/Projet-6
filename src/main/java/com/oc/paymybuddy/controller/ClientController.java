@@ -21,20 +21,6 @@ public class ClientController {
     private final ClientService clientService;
 
 
-/*
- @GetMapping("/index")
-    public String model(Model model,
-                        @RequestParam(value = "page", defaultValue = "0") int page,
-                        @RequestParam(value = "size", defaultValue = "4") int size) {
-        Page<Client> clients = clientService.findAllClients(PageRequest.of(page, size));
-        model.addAttribute("listClients", clients.getContent());
-        model.addAttribute("pages",new int[clients.getTotalPages()]);
-        model.addAttribute("currentPage",page);
-        return "clients";
-    }
-
-*/
-
     @GetMapping("/index")
     public String model(Model model,
                         @RequestParam(value = "page", defaultValue = "0") int page,
@@ -52,12 +38,14 @@ public class ClientController {
         return "redirect:/index?page=" + page;
     }
 
+
     //formulaire d'ajout client
-    @GetMapping("/formClients")
+    @GetMapping("/formClient")
     public String formClient(Model model) {
         model.addAttribute("client", new Client());
         return "formClients";
     }
+
 
     @GetMapping("/get")
     public ResponseEntity<List<Client>> getAllClients() {
@@ -82,6 +70,12 @@ public class ClientController {
         } catch (Exception e) {
             return new ResponseEntity<>("Erreur lors de l'ajout du client", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/save")
+    public String save(Model model, Client client) {
+        clientService.saveClient(client);
+        return "formClients";
     }
 
     @PutMapping("/{id}")
