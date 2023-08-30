@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 layout:decorate="template1">
 <head>
     <meta charset="UTF-8">
@@ -8,52 +9,58 @@ layout:decorate="template1">
 </head>
 <body>
 <div layout:fragment="content1">
-<div class="container mt-2 ">
-    <div class="card">
-        <div class="card-header">Liste des clients</div>
-        <div class="card-body">
-            <!-- valide le formulaire -->
-            <form method="get" th:action="@{index}">
-                <label>Key word</label>
-                <input type="text" name="keyword">
-                <button type="submit" class="btn btn-primary">Rechercher</button>
-            </form>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Mail</th>
-                    <th>Mot de passe</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="c:${listClients}">
-                    <td th:text="${c.getId}"></td>
-                    <td th:text="${c.getFirstName}"></td>
-                    <td th:text="${c.getLastName}"></td>
-                    <td th:text="${c.getMail}"></td>
-                    <td th:text="${c.getPassword}"></td>
-                    <td>
-                        <a class="btn btn-danger" th:href="@{delete(id=${c.id}, page=${currentPage})}">
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <ul class="nav nav-pills">
-                <li th:each="page, status : ${pages}">
-                    <a th:class="${status.index == currentPage ? 'btn btn-primary ms-1' : 'btn btn-outline-primary ms-1'}"
-                       th:text="${status.index}"
-                       th:href="@{index(page=${status.index})}"
-                    ></a>
-                </li>
-            </ul>
+    <div class="container mt-2 ">
+        <div class="card">
+            <div class="card-header">Liste des clients</div>
+            <div class="card-body">
+                <!-- valide le formulaire -->
+                <form method="get" th:action="@{index}">
+                    <label>Key word</label>
+                    <input type="text" name="keyword">
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </form>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Mail</th>
+                        <th>Mot de passe</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="c:${listClients}">
+                        <td th:text="${c.getId}"></td>
+                        <td th:text="${c.getFirstName}"></td>
+                        <td th:text="${c.getLastName}"></td>
+                        <td th:text="${c.getMail}"></td>
+                        <td th:text="${c.getPassword}"></td>
+
+                        <td>
+                            <a class="btn btn-danger" th:href="@{/v1/api/Client/delete/${c.id}}">
+                                Delete
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-success" th:href="@{/v1/api/Client/editClient/(id=${c.id})}">
+                                Modifier
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="nav nav-pills">
+                    <li th:each="page, status : ${pages}">
+                        <a th:class="${status.index == currentPage ? 'btn btn-primary ms-1' : 'btn btn-outline-primary ms-1'}"
+                           th:text="${status.index}"
+                           th:href="@{index(page=${status.index})}"
+                        ></a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 </body>

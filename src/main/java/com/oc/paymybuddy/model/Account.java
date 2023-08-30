@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -18,35 +19,16 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int numberAccount;
-    private int balance;
+    private String numberAccount;
+    private double balance;
 
     @OneToMany
     @JoinColumn(name = "account_id")
     private List<Transaction> transactions;
 
-    public Account(Long id, int numberAccount, int balance, Client client) {
+    public Account(Long id, double balance) {
         this.id = id;
-        this.numberAccount = numberAccount;
+        this.numberAccount = UUID.randomUUID().toString();
         this.balance = balance;
-
-    }
-
-
-    public void showBalance() {
-        System.out.println("your balance : " + balance);
-    }
-
-    public void depositMoney(int amount) {
-        balance += amount;
-    }
-
-    public void withdrawMoney(int amount) {
-        balance -= amount;
-    }
-
-    public void transferToAnOtherAccount(int amount, Account User) {
-        this.withdrawMoney(amount);
-        User.depositMoney(amount);
     }
 }

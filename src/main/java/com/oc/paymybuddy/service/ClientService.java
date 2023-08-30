@@ -1,6 +1,7 @@
 package com.oc.paymybuddy.service;
 
 import com.oc.paymybuddy.Repositories.ClientRepository;
+import com.oc.paymybuddy.model.Account;
 import com.oc.paymybuddy.model.Client;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,8 @@ public class ClientService {
 
 
     public Client saveClient(Client client) {
+        Account account = new Account();
+        client.setAccount(account);
         return clientRepository.save(client);
     }
 
@@ -53,6 +56,11 @@ public class ClientService {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id " + id));
     }
+
+   /* public Client getClientById(Long id) {
+        return clientRepository.findById(id).orElse(null);
+    }*/
+
 
     public void deleteClientById(Long id) {
         Optional<Client> clientId = clientRepository.findById(id);

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,7 +25,9 @@ public class Client {
     private String mail;
     private String password;
 
-   // private List<String> friendsList = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name ="client_id")
+    private List<Client> friendsList;
 
     @OneToOne
     private Account account;

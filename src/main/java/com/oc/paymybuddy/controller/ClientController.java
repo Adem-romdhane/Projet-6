@@ -32,10 +32,10 @@ public class ClientController {
         return "clients";
     }
 
-    @GetMapping("/delete")
-    public String delete(Long id, int page) {
+    @DeleteMapping("/delete")
+    public String delete(Long id) {
         clientService.deleteClientById(id);
-        return "redirect:/index?page=" + page;
+        return "redirect:/index";
     }
 
 
@@ -46,7 +46,6 @@ public class ClientController {
         return "formClients";
     }
 
-
     @GetMapping("/get")
     public ResponseEntity<List<Client>> getAllClients() {
         List<Client> clients = clientService.findAll();
@@ -54,6 +53,20 @@ public class ClientController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(clients, HttpStatus.OK);
+    }
+
+    /*   @GetMapping("/editClient")
+       public String editClient(Model model,Long id){
+           Client client = clientService.getClientById(id);
+           model.addAttribute("client",client);
+           return "editClients";
+       }
+   */
+    @GetMapping("/editClient")
+    public String editClient(Model model,Long id) {
+        Client client = clientService.getClientById(id);
+        model.addAttribute("client", client);
+        return "editClients"; // Assurez-vous que le nom de la vue est correct
     }
 
     @GetMapping("clients/{id}")
