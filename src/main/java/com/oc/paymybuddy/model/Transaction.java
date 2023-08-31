@@ -22,7 +22,8 @@ public class Transaction {
     private Date operationDate;
     private String operationDescription;
 
-    //private Account account;
+    //@ManyToOne(fetch = FetchType.LAZY)
+  //  private Account account;
 
     public Transaction(Long id, Date operationDate, String operationDescription) {
         this.id = id;

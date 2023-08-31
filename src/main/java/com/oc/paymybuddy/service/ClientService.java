@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,7 +20,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ClientService {
+public class ClientService implements UserDetailsService {
     private final ClientRepository clientRepository;
 
 
@@ -26,12 +30,14 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
+
+
+
     //pagination
     public Page<Client> findAllClients(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return clientRepository.findAll(pageRequest);
     }
-
 
 
     public List<Client> findAll() {
@@ -71,4 +77,12 @@ public class ClientService {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+        Client clientByEmail = clientRepository.findClientByMail(mail);
+        if (clientByEmail == null){
+            throw new RuntimeException("client" + clientByEmail + " not found ");
+        }
+        return new User(clientByEmail.getMail(), clientByEmail.getPassword(),null);
+    }
 }

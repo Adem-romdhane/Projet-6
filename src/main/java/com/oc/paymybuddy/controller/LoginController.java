@@ -1,22 +1,18 @@
 package com.oc.paymybuddy.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.annotation.security.RolesAllowed;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class LoginController {
 
-    @RolesAllowed("USER")
-    @RequestMapping("/*")
+    @GetMapping("/login")
     public String getUser()
     {
-        return "redirect:/v1/api/Client/index";
+        return "login";
     }
 
-    @RolesAllowed({"USER","ADMIN"})
-    @RequestMapping("/admin")
+    @GetMapping("/admin")
     public String getAdmin()
     {
         return "clients";

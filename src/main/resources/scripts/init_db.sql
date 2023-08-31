@@ -30,3 +30,4 @@ ALTER TABLE account
 ALTER TABLE transactions
     ADD FOREIGN KEY (account_id) REFERENCES account (id)
         ON DELETE CASCADE;
+
