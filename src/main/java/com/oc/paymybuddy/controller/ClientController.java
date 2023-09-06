@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +33,47 @@ public class ClientController {
         return "clients";
     }
 
-    @DeleteMapping("/delete")
-    public String delete(Long id) {
-        clientService.deleteClientById(id);
+     /*  @GetMapping("/connexion")
+   public String showLoginPage()
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken){
+            return "login";
+        }
         return "redirect:/index";
+   }
+*/
+
+
+    @GetMapping("/connexion")
+    public String login(Model model) {
+        Client client = new Client();
+        model.addAttribute("client",new Client());
+        model.addAttribute("mail", client.getMail()); // User est votre modèle
+        model.addAttribute("password", client.getPassword()); // User est votre modèle
+
+        return "login";
+    }
+
+    @PostMapping("/process_register")
+    public String processRegister(Client client){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(client.getPassword());
+        client.setPassword(encodedPassword);
+        clientService.saveClient(client);
+        return "register_success";
+    }
+
+    @GetMapping("/register")
+    public String RegistrationForm(Model model ) {
+        model.addAttribute("client", new Client());
+        return "formClients";
     }
 
 
     //formulaire d'ajout client
     @GetMapping("/formClient")
-    public String formClient(Model model) {
+    public String Registration(Model model){
         model.addAttribute("client", new Client());
         return "formClients";
     }
@@ -55,19 +87,6 @@ public class ClientController {
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
-    /*   @GetMapping("/editClient")
-       public String editClient(Model model,Long id){
-           Client client = clientService.getClientById(id);
-           model.addAttribute("client",client);
-           return "editClients";
-       }
-   */
-    @GetMapping("/editClient")
-    public String editClient(Model model,Long id) {
-        Client client = clientService.getClientById(id);
-        model.addAttribute("client", client);
-        return "editClients"; // Assurez-vous que le nom de la vue est correct
-    }
 
     @GetMapping("clients/{id}")
     public Client getById(@PathVariable Long id) {

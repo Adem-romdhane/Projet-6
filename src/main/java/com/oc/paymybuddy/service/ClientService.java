@@ -30,6 +30,9 @@ public class ClientService implements UserDetailsService {
         return clientRepository.save(client);
     }
 
+//    public Client addConnection (Client client){
+//
+//    }
 
 
 

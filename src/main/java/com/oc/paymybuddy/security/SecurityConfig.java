@@ -19,26 +19,36 @@ public class SecurityConfig {
 
     private final ClientService clientService;
 
+
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
+    protected void configure(HttpSecurity http) throws Exception{
+        http.authorizeRequests()
+                .anyRequest().authenticated().and()
+                .formLogin()
+                .loginPage("/connexion")
+                .usernameParameter("mail").permitAll();
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-              /*  .authorizeHttpRequests( requests -> requests
-                       // .requestMatchers("/registration").permitAll()
-                       // .requestMatchers("/login").permitAll()
-                       // .anyRequest().authenticated()
-                )*/
+                /*  .authorizeHttpRequests( requests -> requests
+                         // .requestMatchers("/registration").permitAll()
+                         // .requestMatchers("/login").permitAll()
+                         // .anyRequest().authenticated()
+                  )*/
                 .formLogin((form) -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login")
+                                .loginPage("/login")
+                                .loginProcessingUrl("/login")
                         //.permitAll()
                 );
-                //.logout((logout) -> logout.permitAll())
-                //.exceptionHandling().accessDeniedPage("/access-denied");
+        //.logout((logout) -> logout.permitAll())
+        //.exceptionHandling().accessDeniedPage("/access-denied");
         return http.build();
     }
 
@@ -47,4 +57,38 @@ public class SecurityConfig {
         auth.userDetailsService(clientService)
                 .passwordEncoder(passwordEncoder());
     }
+
+
+ /*
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests(requests -> requests
+                        .antMatchers("/registration").permitAll()
+                        .antMatchers("/login").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/perform_login")
+                        .usernameParameter("mail")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/perform_logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedPage("/access-denied")
+                );
+        return http.build();
+    }
+
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(clientService)
+                .passwordEncoder(passwordEncoder());
+    }*/
 }

@@ -9,7 +9,7 @@
 <body>
 <div layout:fragment="content1">
     <div class="col-md-6 offset-3">
-        <form method="post" th:action="@{save}">
+        <form th:action="@{/process_register}" th:object="${client}" method="post">
             <div>
                 <label>lastName</label>
                 <input class="form-control" type="text" name="lastName" th:value="${client.lastName}">
