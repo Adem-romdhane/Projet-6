@@ -7,15 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
-@RequestMapping("/v1/api/Client")
+//@RequestMapping("/v1/api/Client")
 @RequiredArgsConstructor
 @Slf4j
 public class ClientController {
@@ -45,14 +44,25 @@ public class ClientController {
 */
 
 
-    @GetMapping("/connexion")
+    @GetMapping("/login")
     public String login(Model model) {
-        Client client = new Client();
         model.addAttribute("client",new Client());
-        model.addAttribute("mail", client.getMail()); // User est votre modèle
-        model.addAttribute("password", client.getPassword()); // User est votre modèle
-
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginSubmit(@ModelAttribute Client client, Model model) {
+        //try {
+        System.out.println(client);
+            UserDetails userDetails = clientService.loadUserByUsername(client.getMail());
+            System.out.println("user details:"+userDetails);
+            // Vous pouvez stocker les informations de l'utilisateur dans le modèle
+            model.addAttribute("userDetails", userDetails);
+            return "redirect:clients"; // Redirigez l'utilisateur vers le tableau de bord après la connexion réussie
+      /*//  } catch (UsernameNotFoundException e) {
+            model.addAttribute("error", "Identifiants invalides"); // Gérez les erreurs de connexion
+            return "login";
+        }*/
     }
 
     @PostMapping("/process_register")
@@ -70,28 +80,6 @@ public class ClientController {
         return "formClients";
     }
 
-
-    //formulaire d'ajout client
-    @GetMapping("/formClient")
-    public String Registration(Model model){
-        model.addAttribute("client", new Client());
-        return "formClients";
-    }
-
-    @GetMapping("/get")
-    public ResponseEntity<List<Client>> getAllClients() {
-        List<Client> clients = clientService.findAll();
-        if (clients.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(clients, HttpStatus.OK);
-    }
-
-
-    @GetMapping("clients/{id}")
-    public Client getById(@PathVariable Long id) {
-        return clientService.getClientById(id);
-    }
 
     @PostMapping("/clients")
     public ResponseEntity<String> addClient(@RequestBody Client client) {

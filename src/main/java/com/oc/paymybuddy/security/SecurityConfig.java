@@ -25,53 +25,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-    protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests()
-                .anyRequest().authenticated().and()
-                .formLogin()
-                .loginPage("/connexion")
-                .usernameParameter("mail").permitAll();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                /*  .authorizeHttpRequests( requests -> requests
-                         // .requestMatchers("/registration").permitAll()
-                         // .requestMatchers("/login").permitAll()
-                         // .anyRequest().authenticated()
-                  )*/
-                .formLogin((form) -> form
-                                .loginPage("/login")
-                                .loginProcessingUrl("/login")
-                        //.permitAll()
-                );
-        //.logout((logout) -> logout.permitAll())
-        //.exceptionHandling().accessDeniedPage("/access-denied");
-        return http.build();
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(clientService)
-                .passwordEncoder(passwordEncoder());
-    }
-
-
- /*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests(requests -> requests
-                        .antMatchers("/registration").permitAll()
+                        .antMatchers("/register").permitAll()
                         .antMatchers("/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .loginProcessingUrl("/perform_login")
-                        .usernameParameter("mail")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/index")
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -90,5 +55,5 @@ public class SecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(clientService)
                 .passwordEncoder(passwordEncoder());
-    }*/
+    }
 }

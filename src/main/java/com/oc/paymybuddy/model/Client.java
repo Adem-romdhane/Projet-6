@@ -25,7 +25,7 @@ public class Client {
     private String mail;
     private String password;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name ="client_id")
     private List<Client> friendsList;
 

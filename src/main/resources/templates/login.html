@@ -112,7 +112,8 @@
       <div class="col-md-offset-4 col-md-4 col-sm-offset-3 col-sm-6">
         <div class="form-container">
           <h3 class="title">Pay my buddy</h3>
-          <form  class="form-horizontal">
+          <form th:action="@{/login}"
+                method="post" class="form-horizontal">
             <div class="form-group">
               <span class="input-icon"><i class="fa fa-user"></i></span>
               <input type="email"  name="mail" class="form-control"  placeholder="Email" required autofocus>

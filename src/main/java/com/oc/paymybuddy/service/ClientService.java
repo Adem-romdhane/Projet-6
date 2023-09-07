@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,6 +89,9 @@ public class ClientService implements UserDetailsService {
         if (clientByEmail == null){
             throw new RuntimeException("client" + clientByEmail + " not found ");
         }
-        return new User(clientByEmail.getMail(), clientByEmail.getPassword(),null);
+        System.out.println("user by email "+clientByEmail);
+        List<GrantedAuthority> authority = new ArrayList<>();
+        authority.add(new SimpleGrantedAuthority("admin"));
+        return new User(clientByEmail.getMail(), clientByEmail.getPassword(),authority);
     }
 }
