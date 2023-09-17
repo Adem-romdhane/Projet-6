@@ -3,7 +3,6 @@ package com.oc.paymybuddy.controller;
 import com.oc.paymybuddy.model.Account;
 import com.oc.paymybuddy.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,9 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/v1/api/Account")
 @RequiredArgsConstructor
-@Slf4j
+@RequestMapping("account")
 public class AccountController {
 
     private final AccountService accountService;
@@ -28,7 +26,8 @@ public class AccountController {
             return new ResponseEntity<>("Erreur lors de l'ajout du compte", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/get")
+
+    @GetMapping
     public ResponseEntity<List<Account>> getAccounts() {
         List<Account> accounts = accountService.findAll();
         if (accounts.isEmpty()) {
@@ -38,12 +37,7 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public Account accountUpdate(@PathVariable Long id,@RequestBody Account account){
+    public Account accountUpdate(@PathVariable Long id, @RequestBody Account account) {
         return accountService.updateAccount(id, account);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteClient(@PathVariable("id") Long id) {
-        accountService.deleteAccountById(id);
     }
 }

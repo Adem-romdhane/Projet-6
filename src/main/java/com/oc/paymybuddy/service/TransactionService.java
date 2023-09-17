@@ -7,15 +7,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
 @Slf4j
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class TransactionService {
 
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
     public Transaction saveTransaction(Transaction transaction) {
         return transactionRepository.save(transaction);
@@ -23,14 +24,6 @@ public class TransactionService {
 
     public List<Transaction> findAll() {
         return transactionRepository.findAll();
-    }
-
-    public void deleteTransactionById(Long id) {
-        Optional<Transaction>transactionId = transactionRepository.findById(id);
-        if (transactionId.isEmpty()){
-            System.out.println("not exist");
-        }
-        transactionRepository.deleteById(id);
     }
 
 }

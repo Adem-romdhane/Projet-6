@@ -4,15 +4,16 @@ CREATE TABLE IF NOT EXISTS client (
     first_name VARCHAR(50),
     last_name VARCHAR(50),
     mail VARCHAR(100),
-    password VARCHAR(100)
+    password VARCHAR(100),
+    account_id BIGINT,
+    client_id BIGINT
 );
 
 -- Création de la table Account
 CREATE TABLE IF NOT EXISTS account (
     id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     number_account INT,
-    balance INT,
-    client_id BIGINT
+    balance INT
 );
 
 -- Création de la table Transaction
@@ -23,8 +24,12 @@ CREATE TABLE  IF NOT EXISTS transactions (
     account_id BIGINT
 );
 
-ALTER TABLE account
+ALTER TABLE client
     ADD FOREIGN KEY (client_id) REFERENCES client (id)
+        ON DELETE CASCADE;
+
+ALTER TABLE client
+    ADD FOREIGN KEY (account_id) REFERENCES client (id)
         ON DELETE CASCADE;
 
 ALTER TABLE transactions
