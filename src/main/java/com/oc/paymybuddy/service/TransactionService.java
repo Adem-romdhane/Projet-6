@@ -26,4 +26,10 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
+  /*  public void createTransaction(Transaction transaction) {
+        Transaction transaction1 = new Transaction();
+//        transaction1.setOperationDate(transaction1.getOperationDate());
+        transaction1.setOperationDescription(transaction1.getOperationDescription());
+    }*/
+
 }

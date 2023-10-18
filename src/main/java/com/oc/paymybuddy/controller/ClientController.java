@@ -3,6 +3,8 @@ package com.oc.paymybuddy.controller;
 import com.oc.paymybuddy.model.Client;
 import com.oc.paymybuddy.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,12 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/index")
-    public String model() {
+    public String index (Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Client client = clientService.getByEmail(authentication.getName());
+      model.addAttribute("friendsList", client.getFriendsList());
+        model.addAttribute("transactions", client.getAccount().getTransactions());
+
         return "clients";
     }
 

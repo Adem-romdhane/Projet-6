@@ -19,10 +19,11 @@ CREATE TABLE IF NOT EXISTS account (
 -- Création de la table Transaction
 CREATE TABLE  IF NOT EXISTS transactions (
     id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    operation_date DATE,
-    operation_description VARCHAR(255),
-    account_id BIGINT
-);
+    createdAt DATE,
+    description VARCHAR(255),
+    account_id BIGINT,
+    amount DECIMAL
+    );
 
 ALTER TABLE client
     ADD FOREIGN KEY (client_id) REFERENCES client (id)

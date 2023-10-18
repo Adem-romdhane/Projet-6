@@ -36,6 +36,10 @@ public class ClientService implements UserDetailsService {
         return clientRepository.findAll();
     }
 
+    public Client getByEmail(String mail){
+        return  clientRepository.findByMail(mail);
+    }
+
 
     public Client updateClient(Long id, Client clientDetails) {
         log.info("update client");

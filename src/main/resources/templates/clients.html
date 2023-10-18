@@ -1,67 +1,65 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-layout:decorate="template1">
+>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
-<div layout:fragment="content1">
-    <div class="container mt-2 ">
-        <div class="card">
-            <div class="card-header">Liste des clients</div>
-            <div class="card-body">
-                <!-- valide le formulaire -->
-                <form method="get" th:action="@{index}">
-                    <label>Key word</label>
-                    <input type="text" name="keyword">
-                    <button type="submit" class="btn btn-primary">Rechercher</button>
-                </form>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Mail</th>
-                        <th>Mot de passe</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="c:${listClients}">
-                        <td th:text="${c.getId}"></td>
-                        <td th:text="${c.getFirstName}"></td>
-                        <td th:text="${c.getLastName}"></td>
-                        <td th:text="${c.getMail}"></td>
-                        <td th:text="${c.getPassword}"></td>
 
-                        <td>
-                            <a class="btn btn-danger" th:href="@{/v1/api/Client/delete/${c.id}}">
-                                Delete
-                            </a>
-                        </td>
-                        <td>
-                            <a class="btn btn-success" th:href="@{/v1/api/Client/editClient/(id=${c.id})}">
-                                Modifier
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <ul class="nav nav-pills">
-                    <li th:each="page, status : ${pages}">
-                        <a th:class="${status.index == currentPage ? 'btn btn-primary ms-1' : 'btn btn-outline-primary ms-1'}"
-                           th:text="${status.index}"
-                           th:href="@{index(page=${status.index})}"
-                        ></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+            <span class="fs-4">PAY MY BUDDY</span>
+        </a>
+
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="#" class="nav-link active" aria-current="pa   ge">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Transfer</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Profile</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Log Off</a></li>
+        </ul>
+    </header>
+</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Transfer</li>
+    </ol>
+</nav>
+<div>
+Send money <span th:class="'align-right'">Add connection</span>
+
+<div class="input-group mb-3">
+    <input type="text" class="form-control" aria-label="Text input with dropdown button">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
 </div>
 
+<div>
+    My transactions
+    <table>
+        <thead>
+        <tr>
+            <th>Connection</th>
+            <th>Description</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transaction : ${transactions}">
+            <td th:text="${transaction?.connexion}"></td>
+            <td th:text="${transaction?.description}"></td>
+            <td th:text="${transaction?.amount}"></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

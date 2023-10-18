@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -18,7 +20,11 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Temporal(TemporalType.DATE)
-    private Date operationDate;
-    private String operationDescription;
+    private String description;
+    @Column(name = "amount")
+    private BigDecimal amount;
+    private String connexion;
+    private String transactionNumber;
+    private LocalDate createdAt;
+
 }

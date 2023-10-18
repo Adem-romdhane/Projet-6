@@ -16,6 +16,14 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
+
+    /*@PostMapping("/user_transactions")
+    public String sendUserTransaction(@ModelAttribute Transaction transaction,
+                                      @PathVariable String id){
+        transactionService.createTransaction(transaction);
+        return "transactionSuccess";
+    }
+*/
     @PostMapping
     public ResponseEntity<String> addTransaction(@RequestBody Transaction transaction) {
         try {
