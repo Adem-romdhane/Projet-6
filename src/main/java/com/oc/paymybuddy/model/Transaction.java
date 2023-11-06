@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 
 @Data
@@ -22,9 +20,10 @@ public class Transaction {
     private Long id;
     private String description;
     @Column(name = "amount")
-    private BigDecimal amount;
+    private double amount;
     private String connexion;
     private String transactionNumber;
+    @Column(name = "created_at")
     private LocalDate createdAt;
 
 }

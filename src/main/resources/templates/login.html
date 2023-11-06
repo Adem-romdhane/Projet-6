@@ -5,37 +5,36 @@
     <title>Title</title>
     <style>
         .form-container {
-            background: linear-gradient(150deg, #1B394D 33%, #2D9DA7 34%, #2D9DA7 66%, #EC5F20 67%);
             font-family: 'Raleway', sans-serif;
             text-align: center;
             padding: 30px 20px 50px;
         }
+        .nav-text::before {
+            content: "\2022 \2022 \2022"; /* Trois petits points (bullet points) gris */
+            color: #888; /* Couleur grise pour les points */
+            text-align: left; /* Aligner le texte au centre */
+            margin-right: 8px; /* Marge à droite des points */
+            font-size: 38px; /* Taille de police des points */
+        }
+
+        .nav-text {
+            background-color: #000; /* Fond noir */
+            color: #fff; /* Texte blanc */
+            display: flex;
+            font-size: 14px; /* Taille de police plus petite */
+            align-items: center; /* Centrer verticalement */
+            justify-content: center;
+        }
 
         .form-container .title {
-            color: #fff;
+            color: white;
+            background-color: #77BE50;
             font-size: 23px;
             text-transform: capitalize;
             letter-spacing: 1px;
-            margin: 0 0 60px;
+            margin:39px 551px 60px;
         }
 
-        .form-container .form-horizontal {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .form-horizontal .form-icon {
-            color: #fff;
-            background-color: #1B394D;
-            font-size: 75px;
-            line-height: 92px;
-            height: 90px;
-            width: 90px;
-            margin: -65px auto 10px;
-            border-radius: 50%;
-        }
 
         .form-horizontal .form-group {
             margin: 0 0 10px;
@@ -112,14 +111,19 @@
             font-weight: 600;
             letter-spacing: 5px;
         }
+
+        button{
+            background-color: #0176D8;
+            color: white;
+            padding: 4px 9px 9px;
+        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-light bg-light">
-    <span class="navbar-text">
-        PAY MY BUDDY
-    </span>
+<nav>
+    <span class="nav-text">Pay My Buddy</span>
 </nav>
+
 <div class="form-bg">
     <div class="container">
         <div class="row">
@@ -140,7 +144,7 @@
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                            <label class="form-check-label" for="exampleCheck1">Remember me</label>
                         </div>
                         <button type="submit" class="btn btn-primary">Login</button>
                     </form>

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +26,7 @@ import java.util.List;
 public class ClientService implements UserDetailsService {
 
     private final ClientRepository clientRepository;
+
     public Client saveClient(Client client) {
         Account account = new Account();
         account.setBalance(0.0);
@@ -36,8 +38,8 @@ public class ClientService implements UserDetailsService {
         return clientRepository.findAll();
     }
 
-    public Client getByEmail(String mail){
-        return  clientRepository.findByMail(mail);
+    public Client getByEmail(String mail) {
+        return clientRepository.findByMail(mail);
     }
 
 
@@ -66,5 +68,32 @@ public class ClientService implements UserDetailsService {
             return new User(clientByEmail.getMail(), clientByEmail.getPassword(), authority);
         }
         throw new UsernameNotFoundException("Invalid username or password.");
+    }
+
+    public Client addConnection(String email, String otherEmail) {
+        Client clientByEmail = clientRepository.findByMail(email);
+        if (clientByEmail == null) throw new RuntimeException("client not found");
+
+        Client clientByOtherEmail = clientRepository.findByMail(otherEmail);
+        if (clientByOtherEmail == null) throw new RuntimeException("client not found");
+        clientByOtherEmail.getFriendsList().add(clientByEmail);
+        clientByOtherEmail = clientRepository.save(clientByEmail);
+        clientByEmail.getFriendsList().add(clientByOtherEmail);
+        return clientRepository.save(clientByOtherEmail);
+    }
+
+    public List<Client> getFriendsList(Long clientId) {
+        // Obtenez le client par son ID
+        Client client = clientRepository.findById(clientId).orElse(null);
+
+        // Vérifiez si le client existe
+        if (client != null) {
+            // Renvoie la liste d'amis du client
+            return client.getFriendsList();
+        } else {
+            // Si le client n'est pas trouvé, vous pouvez choisir de lever une exception ou renvoyer une liste vide.
+            // Dans cet exemple, je renvoie une liste vide.
+            return Collections.emptyList();
+        }
     }
 }

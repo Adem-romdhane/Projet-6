@@ -1,6 +1,7 @@
 package com.oc.paymybuddy.controller;
 
 import com.oc.paymybuddy.model.Client;
+import com.oc.paymybuddy.model.Transaction;
 import com.oc.paymybuddy.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,12 +23,13 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/index")
-    public String index (Model model) {
+    public String index(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client client = clientService.getByEmail(authentication.getName());
-      model.addAttribute("friendsList", client.getFriendsList());
+        System.out.println("TRANSACTIONS : "+ client.getAccount().getTransactions());
+        model.addAttribute("friends", client.getFriendsList());
         model.addAttribute("transactions", client.getAccount().getTransactions());
-
+        System.out.println("client: " + client);
         return "clients";
     }
 
@@ -33,6 +38,19 @@ public class ClientController {
         model.addAttribute("loginRequest", new LoginRequest("", ""));
         return "login";
     }
+
+
+    @PostMapping("/addConnection")
+    public String addConnection(Model model, String email) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Client client = clientService.getByEmail(authentication.getName());
+        Client addConnection = clientService.addConnection(client.getMail(), email);
+        model.addAttribute("client", addConnection);
+        model.addAttribute("friends", client.getFriendsList());
+
+        return "redirect:index";
+    }
+
 
     @PostMapping("/register")
     public String processRegister(Client client) {
