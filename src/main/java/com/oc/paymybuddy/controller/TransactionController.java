@@ -33,16 +33,16 @@ public class TransactionController {
         return "redirect:index";
     }
 
-    @PostMapping("/deposit")
+   /* @PostMapping("/deposit")
     public String deposit(@RequestParam("deposit_amount") String depositAmount,
                           @RequestParam("account_id") String accountID,
                           HttpSession session,
                           RedirectAttributes redirectAttributes){
 
 
-    }
+    }*/
 
-    ,@GetMapping("/transactions")
+    @GetMapping("/transactions")
     public String getTransactions(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client currentClient = clientService.getByEmail(authentication.getName());
