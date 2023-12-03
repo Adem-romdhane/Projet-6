@@ -1,173 +1,210 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="src/main/css/styles">
-<style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <style>
 
 
-    .breadcrumb-container {
-        background-color: #dcdcdc; /* Couleur de fond gris pour la barre de navigation */
-        padding: 10px; /* Marge intérieure pour un meilleur espacement */
-    }
-
-    .breadcrumb {
-        background-color: transparent; /* Fond transparent pour les éléments de la barre de navigation */
-        margin: 0; /* Supprimer la marge par défaut */
-        padding: 0; /* Supprimer le rembourrage par défaut */
-    }
-
-    .breadcrumb-item a {
-        color: #333; /* Couleur du lien dans la barre de navigation */
-    }
-
-    .breadcrumb-item.active {
-        color: #777; /* Couleur du texte actif dans la barre de navigation */
-    }
-
-    .styled-element {
-        background-color: #4CAF50; /* Fond vert */
-        color: #fff; /* Texte blanc */
-        padding: 10px; /* Marge intérieure pour un meilleur espacement */
-        display: flex; /* Utiliser Flexbox */
-        align-items: center; /* Centrer verticalement */
-        justify-content: center; /* Centrer horizontalement */
-    }
+        .styled-element {
+            background-color: #4CAF50; /* Fond vert */
+            color: #fff; /* Texte blanc */
+            padding: 10px; /* Marge intérieure pour un meilleur espacement */
+            display: flex; /* Utiliser Flexbox */
+            justify-content: flex-start; /* Aligner à gauche */
+            border-radius: 10px; /* Vous pouvez ajuster la valeur selon vos préférences */
+        }
 
 
-    .nav-text::before {
-        content: "\2022 \2022 \2022"; /* Trois petits points (bullet points) gris */
-        color: #888; /* Couleur grise pour les points */
-        text-align: left; /* Aligner le texte au centre */
-        margin-right: 8px; /* Marge à droite des points */
-        font-size: 38px; /* Taille de police des points */
-    }
+        .nav-text::before {
+            content: "\2022 \2022 \2022"; /* Trois petits points (bullet points) gris */
+            color: #888; /* Couleur grise pour les points */
+            display: flex; /* Utiliser Flexbox */
+            justify-content: flex-start; /* Aligner à gauche */
+            font-size: 38px; /* Taille de police des points */
+        }
 
-    .nav-text {
-        background-color: #000; /* Fond noir */
-        color: #fff; /* Texte blanc */
-        display: flex;
-        font-size: 14px; /* Taille de police plus petite */
-        align-items: center; /* Centrer verticalement */
-        justify-content: center;
-    }
+        .nav-text {
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        margin-bottom: 20px;
-    }
+            display: flex;
+            font-size: 14px; /* Taille de police plus petite */
+            align-items: center; /* Centrer verticalement */
+            justify-content: center;
+        }
 
-    .header > div {
-        /* Styles pour l'élément <div> à gauche */
-    }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
 
-
-    .header button {
-        background-color: #007BFF;
-        color: white;
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .connection-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 40px;
-        border: 1px solid #ccc;
-        background-color: #DCDCDC;
-        margin-bottom: 24px;
-        border-collapse: collapse
-    }
+        .header > div {
+            /* Styles pour l'élément <div> à gauche */
+        }
 
 
+        .header button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-    th {
-        background-color: #28a745; /* Fond vert */
-        color: #fff; /* Texte blanc */
-        padding: 10px;
-        text-align: left;
-    }
+        .connection-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px;
+            border: 1px solid #ccc;
+            background-color: #DCDCDC;
+            margin-bottom: 24px;
+            border-collapse: collapse
+        }
 
 
-    .my-transactions{
-        text-align: center;
-    }
+        th {
+            background-color: #28a745; /* Fond vert */
+            color: #fff; /* Texte blanc */
+            padding: 10px;
+            text-align: left;
+        }
 
-    #popup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 20px;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-    }
 
-    #overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 900;
-    }
+        .my-transactions {
+            text-align: center;
+        }
 
-    .tableau-style{
-        border-collapse: collapse;
-        min-width: 400px;
-        width: auto;
-        cursor :pointer;
-        margin: 100px auto;
-        border: 2px solid black;
-    }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
 
-    .send-money{
-        margin: 20px;
-    }
-    button.btn-success{
-        float: right;
+        #popup-deposit {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
 
-    }
-</style>
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 900;
+        }
+
+        .tableau-style {
+            border-collapse: collapse;
+            min-width: 400px;
+            width: auto;
+            cursor: pointer;
+            margin: 100px auto;
+            border: 2px solid black;
+        }
+
+        .send-money {
+            margin: 0 auto;
+            width: 50%;
+        }
+
+        button.btn-success {
+            float: right;
+
+        }
+
+
+        .active {
+            color: rgb(128, 179, 220);
+        }
+
+        /* Ajoutez ces styles pour le tableau */
+        .tableau-style {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .tableau-style th, .tableau-style td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+
+        .nav-bar {
+            padding: 10px; /* Ajoutez la quantité de rembourrage souhaitée */
+            /* Autres styles personnalisés ici */
+        }
+
+        .table {
+            margin: 0 auto; /* Cela centre l'élément horizontalement */
+            width: 50%; /* Ajustez la largeur selon vos besoins */
+            /* Ajoutez d'autres styles CSS si nécessaire */
+        }
+
+        .BuddyPress {
+            background-color: #000; /* Fond noir */
+            color: #fff; /* Texte blanc */
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
-<nav>
-    <span class="nav-text">Pay My Buddy</span>
-</nav>
+<div class="BuddyPress">
+    <nav>
+        <span class="nav-text">Pay My Buddy</span>
+    </nav>
+</div>
 
 <div class="container">
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+        <a href="/"
+           class="d-flex justify-content-start align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi me-2" width="40" height="32">
+                <use xlink:href="#bootstrap"/>
+            </svg>
             <span class="fs-4 styled-element">PAY MY BUDDY</span>
         </a>
 
         <ul class="nav nav-pills">
-            <li class="nav-item"><a href="#" class="nav-link active" aria-current="pa   ge">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Transfer</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Profile</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Log Off</a></li>
+            <li class="nav-item">
+                <button onclick="openPopupDeposit()" class="nav-link">Deposit</button>
+            </li>
         </ul>
     </header>
 </div>
-<div class="breadcrumb-container">
+
+<div class="nav-bar">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -176,33 +213,32 @@
     </nav>
 </div>
 
-
 <div class="send-money">
-<div class="header">
-    <div>Send money</div>
-    <button onclick="openPopup()">Add Connection</button>
-</div>
-<div class="connection-container">
-    <form th:action="@{/sendMoney}" method="post" class="row">
-        <div class="col-auto">
-            <select id="connexion" name="connexion" class="form-select" aria-label="Default select example">
-                <option selected>Select A Connection</option>
-                <option th:each="connexion : ${friends}" th:value="${connexion?.mail}" th:text="${connexion?.firstName}"></option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <input type="number" class="form-control" id="amount" name="amount" placeholder="0">
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-success">Pay</button>
-        </div>
-    </form>
-</div>
+    <div class="header">
+        <div>Send money</div>
+        <button onclick="openPopup()">Add Connection</button>
+    </div>
+    <div class="connection-container">
+        <form th:action="@{/sendMoney}" method="post" class="row">
+            <div class="col-auto">
+                <select id="connexion" name="connexion" class="form-select" aria-label="Default select example">
+                    <option selected>Select A Connection</option>
+                    <option th:each="connexion : ${friends}" th:value="${connexion?.mail}"
+                            th:text="${connexion?.firstName}"></option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <input type="number" class="form-control" id="amount" name="amount" placeholder="0">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-success">Pay</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 
 <form action="" class="deposit-form">
-
 </form>
 
 <div id="popup">
@@ -218,14 +254,26 @@
     </div>
     <button onclick="closePopup()">Close</button>
 </div>
-
 <div id="overlay"></div>
 
-
-<div>
-    <span class="my-transactions">My transactions</span>
+<div id="popup-deposit">
+    <div class="connection-container">
+        <form th:action="@{/deposit}" method="post" class="row">
+            <div class="col-auto">
+                <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-success">DEPOSIT</button>
+            </div>
+        </form>
+    </div>
+    <button onclick="closePopupDeposit()">Close</button>
 </div>
-    <table class="tableau-style">
+
+
+<div class="table">
+    <span class="my-transactions">My transactions</span>
+    <table id="example" class="tableau-style">
         <thead>
         <tr>
             <th>Connection</th>
@@ -241,6 +289,16 @@
         </tr>
         </tbody>
     </table>
+</div>
+
+<div>
+    <ul>
+        <li th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/transactionPage(page=${pageNumber})}" th:text="${pageNumber}"></a>
+        </li>
+    </ul>
+</div>
+
 
 <script>
     function openPopup() {
@@ -248,10 +306,22 @@
         document.getElementById('overlay').style.display = 'block';
     }
 
+    function openPopupDeposit() {
+        document.getElementById('popup-deposit').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+
+    function closePopupDeposit() {
+        document.getElementById('popup-deposit').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
     function closePopup() {
         document.getElementById('popup').style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
     }
+
 </script>
 </body>
 </html>

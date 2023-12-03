@@ -7,22 +7,33 @@ import com.oc.paymybuddy.model.Client;
 import com.oc.paymybuddy.model.Transaction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronizationUtils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final ClientRepository clientRepository;
 
+    public Page<Transaction>getTransactionPage(int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return transactionRepository.findAll(pageRequest);
+    }
+
+    @Transactional
     public Transaction saveTransaction(Transaction transaction) {
         return transactionRepository.save(transaction);
     }
@@ -30,14 +41,26 @@ public class TransactionService {
     public List<Transaction> findAll() {
         return transactionRepository.findAll();
     }
-
-
-    public void depositMoney(Transaction transaction, Client client){
-        Client client1 = clientRepository.findByMail(transaction.getConnexion());
-
-
+    public List<Transaction> findAllTransactionsList(Pageable pageable) {
+        return transactionRepository.findAll();
     }
 
+    public Page<Transaction> findPaginated(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return this.transactionRepository.findAll(pageable);
+    }
+
+
+    @Transactional
+    public void depositMoney(Transaction transaction, Client currentClient) {
+        Transaction deposit = initTransaction(transaction.getAmount(), transaction.getConnexion(), "DEPOSIT");
+        double balance = currentClient.getAccount().getBalance();
+        currentClient.getAccount().setBalance(balance + transaction.getAmount());
+        currentClient.getAccount().getTransactions().add(deposit);
+        clientRepository.save(currentClient);
+    }
+
+    @Transactional
     public void sendMoney(Transaction transaction, Client currentClient) {
         Client otherClient = clientRepository.findByMail(transaction.getConnexion());
 
@@ -67,5 +90,7 @@ public class TransactionService {
         transaction.setCreatedAt(LocalDate.now());
         return transaction;
     }
+
+
 
 }

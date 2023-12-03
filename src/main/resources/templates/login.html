@@ -3,126 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        .form-container {
-            font-family: 'Raleway', sans-serif;
-            text-align: center;
-            padding: 30px 20px 50px;
-        }
-        .nav-text::before {
-            content: "\2022 \2022 \2022"; /* Trois petits points (bullet points) gris */
-            color: #888; /* Couleur grise pour les points */
-            text-align: left; /* Aligner le texte au centre */
-            margin-right: 8px; /* Marge à droite des points */
-            font-size: 38px; /* Taille de police des points */
-        }
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 
-        .nav-text {
-            background-color: #000; /* Fond noir */
-            color: #fff; /* Texte blanc */
-            display: flex;
-            font-size: 14px; /* Taille de police plus petite */
-            align-items: center; /* Centrer verticalement */
-            justify-content: center;
-        }
-
-        .form-container .title {
-            color: white;
-            background-color: #77BE50;
-            font-size: 23px;
-            text-transform: capitalize;
-            letter-spacing: 1px;
-            margin:39px 551px 60px;
-        }
-
-
-        .form-horizontal .form-group {
-            margin: 0 0 10px;
-            position: relative;
-        }
-
-        .form-horizontal .form-group:nth-child(3) {
-            margin-bottom: 30px;
-        }
-
-        .form-horizontal .form-group .input-icon {
-            color: #e7e7e7;
-            font-size: 23px;
-            position: absolute;
-            left: 0;
-            top: 10px;
-        }
-
-        .form-horizontal .form-control {
-            color: #000;
-            font-size: 16px;
-            font-weight: 600;
-            height: 50px;
-            padding: 10px 10px 10px 40px;
-            margin: 0 0 5px;
-            border: none;
-            border-bottom: 2px solid #e7e7e7;
-            border-radius: 0px;
-            box-shadow: none;
-        }
-
-        .form-horizontal .form-control:focus {
-            box-shadow: none;
-            border-bottom-color: #EC5F20;
-        }
-
-        .form-horizontal .form-control::placeholder {
-            color: #000;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .form-horizontal .forgot {
-            font-size: 13px;
-            font-weight: 600;
-            text-align: right;
-            display: block;
-        }
-
-        .form-horizontal .forgot a {
-            color: #777;
-            transition: all 0.3s ease 0s;
-        }
-
-        .form-horizontal .forgot a:hover {
-            color: #777;
-            text-decoration: underline;
-        }
-
-        .form-horizontal .signin {
-            color: #fff;
-            background-color: #0275D8;
-            font-size: 17px;
-            text-transform: capitalize;
-            letter-spacing: 2px;
-            width: 10%;
-            padding: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s ease 0s;
-        }
-
-        .form-horizontal .signin:hover,
-        .form-horizontal .signin:focus {
-            font-weight: 600;
-            letter-spacing: 5px;
-        }
-
-        button{
-            background-color: #0176D8;
-            color: white;
-            padding: 4px 9px 9px;
-        }
-    </style>
 </head>
 <body>
-<nav>
-    <span class="nav-text">Pay My Buddy</span>
+<nav class="nav-text">
+    <a id="title">Pay My Buddy</a>
 </nav>
+
 
 <div class="form-bg">
     <div class="container">
@@ -132,7 +20,8 @@
                     <h3 class="title">Pay my buddy</h3>
                     <form th:action="@{/login}" method="post" class="form-horizontal">
                         <div class="form-group">
-                            <span class="input-icon"><i class="fa fa-user"></i></span>
+                            <span class="input-icon"><i class="fa fa-user"></i>
+                            </span>
                             <input type="email" id="username" name="username" class="form-control" placeholder="Email"
                                    required autofocus>
                         </div>
@@ -146,8 +35,13 @@
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
                             <label class="form-check-label" for="exampleCheck1">Remember me</label>
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <br/>
+                        <button type="submit" class="btn btn-custom">Login</button>
                     </form>
+                    <br/>
+                    <div>
+                        <a th:href="@{/register}">Register</a>
+                    </div>
                 </div>
             </div>
         </div>

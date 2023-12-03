@@ -2,34 +2,52 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <title>FormClients</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
 </head>
 <body>
-<div class="col-md-6 offset-3">
+
+<nav>
+    <span class="nav-text">Pay My Buddy</span>
+</nav>
+
+<div class="form-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 col-sm-offset-3 col-sm-6">
+                <div class="form-container">
+                    <h3 class="title">Pay my buddy</h3>
     <form th:action="@{/register}" th:object="${client}" method="post">
-        <div>
-            <label>lastName</label>
-            <input class="form-control" type="text" name="lastName" th:value="${client.lastName}">
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Lastname" th:value="${client.lastName}">
             <span th:errors="${client.lastName}"></span>
         </div>
-        <div>
-            <label>firstName</label>
-            <input class="form-control" type="text" name="firstName" th:value="${client.firstName}">
+        <br/>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Firstname" name="firstName" th:value="${client.firstName}">
             <span th:errors="${client.firstName}"></span>
         </div>
-        <div>
-            <label>Mail</label>
-            <input class="form-control" type="text" name="mail" th:value="${client.mail}">
+        <br/>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="mail" th:value="${client.mail}">
             <span th:errors="${client.mail}"></span>
         </div>
-        <div>
-            <label>Password</label>
-            <input class="form-control" type="text" name="password" th:value="${client.password}">
+        <br/>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="password" th:value="${client.password}">
             <span th:errors="${client.password}"></span>
         </div>
+        <br/>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
+                    <br/>
+                    <div>
+                        <a th:href="@{/login}">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
