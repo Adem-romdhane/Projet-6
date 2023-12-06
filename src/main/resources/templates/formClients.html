@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
     <title>FormClients</title>
 </head>
 <body>
@@ -17,29 +18,30 @@
             <div class="col-md-offset-4 col-md-4 col-sm-offset-3 col-sm-6">
                 <div class="form-container">
                     <h3 class="title">Pay my buddy</h3>
-    <form th:action="@{/register}" th:object="${client}" method="post">
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="Lastname" th:value="${client.lastName}">
-            <span th:errors="${client.lastName}"></span>
-        </div>
-        <br/>
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="Firstname" name="firstName" th:value="${client.firstName}">
-            <span th:errors="${client.firstName}"></span>
-        </div>
-        <br/>
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="mail" th:value="${client.mail}">
-            <span th:errors="${client.mail}"></span>
-        </div>
-        <br/>
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="password" th:value="${client.password}">
-            <span th:errors="${client.password}"></span>
-        </div>
-        <br/>
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+                    <form th:action="@{/register}" th:object="${client}" method="post">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Lastname" name="lastName" th:value="${client.lastName}">
+                            <span th:errors="${client.lastName}"></span>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Firstname" name="firstName" th:value="${client.firstName}">
+                            <span th:errors="${client.firstName}"></span>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="mail" name="mail" th:value="${client.mail}">
+                            <span th:errors="${client.mail}"></span>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="password" name="password" th:value="${client.password}">
+                            <span th:errors="${client.password}"></span>
+                        </div>
+                        <br/>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+
                     <br/>
                     <div>
                         <a th:href="@{/login}">Login</a>

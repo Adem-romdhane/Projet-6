@@ -4,13 +4,9 @@ import com.oc.paymybuddy.Repositories.TransactionRepository;
 import com.oc.paymybuddy.model.Client;
 import com.oc.paymybuddy.model.Transaction;
 import com.oc.paymybuddy.service.ClientService;
-import com.oc.paymybuddy.service.TransactionService;
+import com.oc.paymybuddy.service.TransactionServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,29 +22,49 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionController {
 
-    private final TransactionService transactionService;
+    private final TransactionServiceImpl transactionServiceImpl;
     private final TransactionRepository transactionRepository;
 
     private final ClientService clientService;
 
-    @GetMapping("/transactionPage")
-    public String Pagination(Model model,@RequestParam(defaultValue = "0") int page){
+//    @GetMapping("/transactionPage")
+//    public String Pagination(Model model,@RequestParam(defaultValue = "0") int page){
+//
+//        int pageSize = 4;
+//
+//        // Utilisez la méthode findAll avec pageable pour obtenir une Page
+//        Page<Transaction> transactionPage = transactionServiceImpl.getTransactionPage(page,pageSize);
+//        model.addAttribute("transaction", transactionPage.getContent());
+//        model.addAttribute("currentPage",page);
+//        model.addAttribute("totalPages",transactionPage.getTotalPages());
+//        return"clients";
+//    }
 
-        int pageSize = 4;
+    @GetMapping("/page/{pageNo}")
+    public String findPaginated(
+            @PathVariable(value = "pageNo") int pageNo,
+            Model model) {
+        int pageSize = 5;
+        Page<Transaction> page = transactionServiceImpl.findPaginated(pageNo, pageSize);
+        List<Transaction> listTransactions = page.getContent();
 
-        // Utilisez la méthode findAll avec pageable pour obtenir une Page
-        Page<Transaction> transactionPage = transactionService.getTransactionPage(page,pageSize);
-        model.addAttribute("transaction", transactionPage.getContent());
-        model.addAttribute("currentPage",page);
-        model.addAttribute("totalPages",transactionPage.getTotalPages());
-        return"clients";
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("listTransactions", listTransactions);
+        return "clients";
+    }
+
+    @GetMapping("/")
+    public String viewHomePage(Model model) {
+        return findPaginated(1, model);
     }
 
     @PostMapping("/sendMoney")
     public String getSendMoneyForm(Model model, Transaction transaction) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client currentClient = clientService.getByEmail(authentication.getName());
-        transactionService.sendMoney(transaction, currentClient);
+        transactionServiceImpl.sendMoney(transaction, currentClient);
 
         return "redirect:index";
     }
@@ -58,7 +74,7 @@ public class TransactionController {
     public String deposit(Model model, Transaction transaction) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client currentClient = clientService.getByEmail(authentication.getName());
-        transactionService.depositMoney(transaction, currentClient);
+        transactionServiceImpl.depositMoney(transaction, currentClient);
         return "redirect:index";
     }
 
@@ -72,12 +88,9 @@ public class TransactionController {
     }
 
 
-
-
-
     @GetMapping
     public ResponseEntity<List<Transaction>> getAccounts() {
-        List<Transaction> transactions = transactionService.findAll();
+        List<Transaction> transactions = transactionServiceImpl.findAll();
         if (transactions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
