@@ -8,5 +8,3 @@ paymubuddy est une application qui permet aux clients de transférer de l'argent
 - Un utilisateur peut verser de l'argent sur son compte
 - Les clients peuvent envoyer de l'argent à tout autre client enregistré sur l'application
 
-## Diagramme uml
-<img width="388" alt="diagramme uml" src="/main/resources/image/diagramuml.png">
