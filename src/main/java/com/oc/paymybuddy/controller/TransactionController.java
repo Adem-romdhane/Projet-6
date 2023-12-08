@@ -27,19 +27,6 @@ public class TransactionController {
 
     private final ClientService clientService;
 
-//    @GetMapping("/transactionPage")
-//    public String Pagination(Model model,@RequestParam(defaultValue = "0") int page){
-//
-//        int pageSize = 4;
-//
-//        // Utilisez la méthode findAll avec pageable pour obtenir une Page
-//        Page<Transaction> transactionPage = transactionServiceImpl.getTransactionPage(page,pageSize);
-//        model.addAttribute("transaction", transactionPage.getContent());
-//        model.addAttribute("currentPage",page);
-//        model.addAttribute("totalPages",transactionPage.getTotalPages());
-//        return"clients";
-//    }
-
     @GetMapping("/page/{pageNo}")
     public String findPaginated(
             @PathVariable(value = "pageNo") int pageNo,
