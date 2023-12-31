@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -59,11 +60,6 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> findAllTransactionsList(Pageable pageable) {
-        return transactionRepository.findAll();
-    }
-
-
 
     @Transactional
     public void depositMoney(Transaction transaction, Client currentClient) {
@@ -76,23 +72,54 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional
     public void sendMoney(Transaction transaction, Client currentClient) {
-        Client otherClient = clientRepository.findByMail(transaction.getConnexion());
+        // Récupération du montant à transférer et du solde actuel du client
+        double amountToTransfer = transaction.getAmount();
+        double currentBalance = currentClient.getAccount().getBalance();
 
-        // debiter le solde du compte emmetteur
-        currentClient.getAccount().setBalance(currentClient.getAccount().getBalance() - transaction.getAmount());
+        // Vérifier si le montant à transférer est valide
+        if (amountToTransfer <= 0) {
+            throw new IllegalArgumentException("Le montant à transférer doit être supérieur à zéro");
+        }
 
-        otherClient.getAccount().setBalance(otherClient.getAccount().getBalance() + transaction.getAmount());
+        // Calculer le montant de la commission de monétisation (0,5 %)
+        double monetizationFee = amountToTransfer * 0.005; // 0,5%
 
+        // Calculer le montant réel à transférer après déduction de la commission
+        double actualTransferAmount = amountToTransfer - monetizationFee;
 
-        Transaction transactionDeposit = initTransaction(transaction.getAmount(), transaction.getConnexion(), "TRANSFERT");
+        // Vérifier si le solde est suffisant pour le transfert incluant la commission
+        if (currentBalance >= amountToTransfer) {
+            // Recherche du client destinataire
+            Client otherClient = clientRepository.findByMail(transaction.getConnexion());
 
-        currentClient.getAccount().getTransactions().add(transactionDeposit);
-        otherClient.getAccount().getTransactions().add(transactionDeposit);
+            // Vérifier si le client destinataire existe
+            if (otherClient == null) {
+                throw new IllegalArgumentException("Le destinataire avec cette adresse e-mail n'existe pas.");
+            }
 
-        clientRepository.save(currentClient);
-        clientRepository.save(otherClient);
+            // Débiter le solde du compte émetteur
+            currentClient.getAccount().setBalance(currentBalance - amountToTransfer);
 
+            // Créer une transaction distincte pour le client destinataire
+            Transaction transactionReceiver = initTransaction(actualTransferAmount, transaction.getConnexion(), "TRANSFER");
+
+            // Associer la transaction destinataire au client destinataire
+            otherClient.getAccount().getTransactions().add(transactionReceiver);
+
+            // Modifier la valeur de transaction.getAmount() pour le montant réellement transféré
+            transaction.setAmount(actualTransferAmount);
+
+            // Sauvegarder les modifications pour chaque client séparément
+            clientRepository.save(currentClient);
+            clientRepository.save(otherClient);
+        } else {
+            // Gérer le cas où le solde est insuffisant pour le transfert
+            throw new IllegalStateException("Solde insuffisant pour effectuer ce transfert");
+        }
     }
+
+
+
 
     private Transaction initTransaction(double amount, String otherAccount, String description) {
         Transaction transaction = new Transaction();

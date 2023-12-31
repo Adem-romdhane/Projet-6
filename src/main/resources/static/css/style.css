@@ -8,16 +8,6 @@
 }
 
 
-.nav-text::before {
-    content: "\2022 \2022 \2022"; /* Trois petits points (bullet points) gris */
-    color: #888; /* Couleur grise pour les points */
-    text-align: left; /* Aligner le texte au centre */
-    margin-right: 1193px; /* Marge à droite des points */
-    font-size: 38px; /* Taille de police des points */
-    display: inline-block; /* Permet au contenu de s'afficher à côté du texte */
-    vertical-align: middle; /* Alignement vertical au centre */
-}
-
 
 .nav-text {
     background-color: #000; /* Fond noir */
@@ -32,7 +22,7 @@
 #title {
     text-decoration: none; /* Supprimer le soulignement du lien, si nécessaire */
     color: #fff; /* Couleur du texte */
-    font-size: 14px; /* Taille de police */
+    font-size: 30px; /* Taille de police */
 }
 
 

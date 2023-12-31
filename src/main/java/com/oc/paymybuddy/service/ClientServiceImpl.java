@@ -5,6 +5,9 @@ import com.oc.paymybuddy.model.Account;
 import com.oc.paymybuddy.model.Client;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -23,7 +26,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ClientService implements UserDetailsService {
+public class ClientServiceImpl implements UserDetailsService {
 
     private final ClientRepository clientRepository;
 
@@ -77,9 +80,9 @@ public class ClientService implements UserDetailsService {
         Client clientByOtherEmail = clientRepository.findByMail(otherEmail);
         if (clientByOtherEmail == null) throw new RuntimeException("client not found");
         clientByOtherEmail.getFriendsList().add(clientByEmail);
-        clientByOtherEmail = clientRepository.save(clientByEmail);
+        clientByOtherEmail = clientRepository.save(clientByOtherEmail);
         clientByEmail.getFriendsList().add(clientByOtherEmail);
-        return clientRepository.save(clientByOtherEmail);
+        return clientRepository.save(clientByEmail);
     }
 
     public List<Client> getFriendsList(Long clientId) {
@@ -95,5 +98,10 @@ public class ClientService implements UserDetailsService {
             // Dans cet exemple, je renvoie une liste vide.
             return Collections.emptyList();
         }
+    }
+
+    public Page<Client> findPaginated(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return this.clientRepository.findAll(pageable);
     }
 }

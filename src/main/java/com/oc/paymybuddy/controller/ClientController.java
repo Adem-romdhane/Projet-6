@@ -2,17 +2,16 @@ package com.oc.paymybuddy.controller;
 
 import com.oc.paymybuddy.model.Client;
 import com.oc.paymybuddy.model.Transaction;
-import com.oc.paymybuddy.service.ClientService;
+import com.oc.paymybuddy.service.ClientServiceImpl;
+import com.oc.paymybuddy.service.TransactionServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,20 +19,29 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping
 public class ClientController {
-    private final ClientService clientService;
+    private final ClientServiceImpl clientServiceImpl;
+    private final TransactionServiceImpl transactionService;
 
     @GetMapping("/index")
-    public String index(Model model) {
+    public String index(Model model, @RequestParam(name = "pageNo" , defaultValue = "1") int pageNo) {
+        int pageSize = 5;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Client client = clientService.getByEmail(authentication.getName());
+        Client client = clientServiceImpl.getByEmail(authentication.getName());
+        Page<Transaction> page = transactionService.findPaginated(pageNo, pageSize);
+        List<Transaction> listTransactions = page.getContent();
+
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("listTransactions", listTransactions);
         System.out.println("TRANSACTIONS : "+ client.getAccount().getTransactions());
         model.addAttribute("friends", client.getFriendsList());
         model.addAttribute("transactions", client.getAccount().getTransactions());
         System.out.println("client: " + client);
         return "clients";
     }
-
-    @GetMapping({"/", "/login"})
+    @GetMapping({ "/login"})
     public String login(Model model) {
         model.addAttribute("loginRequest", new LoginRequest("", ""));
         return "login";
@@ -43,12 +51,13 @@ public class ClientController {
     @PostMapping("/addConnection")
     public String addConnection(Model model, String email) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Client client = clientService.getByEmail(authentication.getName());
-        Client addConnection = clientService.addConnection(client.getMail(), email);
+        Client client = clientServiceImpl.getByEmail(authentication.getName());
+        Client addConnection = clientServiceImpl.addConnection(client.getMail(), email);
         model.addAttribute("client", addConnection);
         model.addAttribute("friends", client.getFriendsList());
 
-        return "redirect:index";
+
+        return "redirect:index?pageNo=1";
     }
 
 
@@ -57,7 +66,7 @@ public class ClientController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(client.getPassword());
         client.setPassword(encodedPassword);
-        clientService.saveClient(client);
+        clientServiceImpl.saveClient(client);
         return "redirect:login?register_success";
     }
 
