@@ -20,6 +20,7 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
 
+    //encryptage du password
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
